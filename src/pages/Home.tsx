@@ -1,9 +1,11 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDynamicPage } from '../hooks/useDynamicPage';
 
 export default function Home() {
   const { t } = useTranslation();
+  const dynamicContent = useDynamicPage('home');
 
   return (
     <div className="flex-1 flex flex-col px-6 md:px-12 relative min-h-[calc(100vh-140px)]">
@@ -15,9 +17,9 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          {t('home.titlePart1')} <br/>
-          <span className="font-medium italic text-cyan-400">{t('home.titleTech')}</span>,
-          <br /> {t('home.titlePart2')}
+          {dynamicContent?.titlePart1 || t('home.titlePart1')} <br/>
+          <span className="font-medium italic text-cyan-400">{dynamicContent?.titleTech || t('home.titleTech')}</span>,
+          <br /> {dynamicContent?.titlePart2 || t('home.titlePart2')}
         </motion.h1>
         <motion.p 
           className="mt-6 md:mt-8 text-sm md:text-base opacity-60 font-light leading-relaxed max-w-md"
@@ -25,7 +27,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          {t('home.subtitle')}
+          {dynamicContent?.subtitle || t('home.subtitle')}
         </motion.p>
         
         <motion.div 
@@ -35,10 +37,10 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.4 }}
         >
           <Link to="/products" className="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-xs uppercase tracking-[0.2em] transition-all backdrop-blur-md">
-            {t('home.explore')}
+            {dynamicContent?.explore || t('home.explore')}
           </Link>
           <Link to="/tiny-living" className="text-xs uppercase tracking-[0.2em] border-b border-transparent hover:border-cyan-400 text-cyan-400 pb-1 transition-all">
-            {t('home.tinyLink')} &rarr;
+            {dynamicContent?.tinyLink || t('home.tinyLink')} &rarr;
           </Link>
         </motion.div>
       </div>

@@ -1,33 +1,57 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../lib/firebase';
 
 export default function Journal() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [dbPosts, setDbPosts] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const q = query(collection(db, 'posts'), where('lang', '==', i18n.language));
+        const snapshot = await getDocs(q);
+        const fetchedPosts: any[] = [];
+        snapshot.forEach(doc => {
+          fetchedPosts.push({ id: doc.id, ...doc.data() });
+        });
+        setDbPosts(fetchedPosts.sort((a, b) => new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()));
+      } catch (err) {
+        console.error("Error fetching journal posts", err);
+      }
+    };
+    fetchPosts();
+  }, [i18n.language]);
+
   const postsList = t('journal.posts', { returnObjects: true }) as Array<{ category: string, title: string, excerpt: string, date: string }>;
 
-  const posts = [
+  const staticPosts = [
     {
-      id: 1,
+      id: "static-1",
       ...postsList[0],
       image: 'from-orange-900/20 to-red-900/10',
     },
     {
-      id: 2,
+      id: "static-2",
       ...postsList[1],
       image: 'from-gray-800/40 to-[#111]',
     },
     {
-      id: 3,
+      id: "static-3",
       ...postsList[2],
       image: 'from-cyan-900/20 to-blue-900/10',
     },
     {
-      id: 4,
+      id: "static-4",
       ...postsList[3],
       image: 'from-amber-900/20 to-[#111]',
     }
   ];
+
+  const posts = dbPosts.length > 0 ? dbPosts : staticPosts;
 
   return (
     <div className="flex-1 py-12 px-6 md:px-12 relative">

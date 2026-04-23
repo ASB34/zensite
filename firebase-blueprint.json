@@ -1,0 +1,56 @@
+{
+  "entities": {
+    "Admin": {
+      "title": "Admin",
+      "description": "Admin users",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" }
+      },
+      "required": ["email"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Blog Post",
+      "type": "object",
+      "properties": {
+        "lang": { "type": "string" },
+        "title": { "type": "string" },
+        "category": { "type": "string" },
+        "excerpt": { "type": "string" },
+        "content": { "type": "string" },
+        "date": { "type": "string" },
+        "image": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["title", "content", "lang", "createdAt", "updatedAt"]
+    },
+    "Page": {
+      "title": "Page",
+      "description": "Page Content",
+      "type": "object",
+      "properties": {
+        "pageId": { "type": "string" },
+        "lang": { "type": "string" },
+        "contentJson": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["pageId", "lang", "contentJson", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/admins/{userId}": {
+      "schema": { "$ref": "#/entities/Admin" },
+      "description": "Stores admin status"
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Stores blog posts"
+    },
+    "/pages/{docId}": {
+      "schema": { "$ref": "#/entities/Page" },
+      "description": "Stores page contents. docId is pageId_lang"
+    }
+  }
+}

@@ -1,0 +1,85 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+
+    function isAdmin() {
+      // Allow only the specific admin email to write. 
+      // Note: for production it's better to use an /admins collection.
+      // But since user explicitly asked for this email:
+      return request.auth != null && request.auth.token.email == 'asbajans@gmail.com';
+    }
+
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+
+    function isValidAdmin(data) {
+      return data.keys().hasAll(['email']) && data.keys().size() == 1
+        && data.email is string && data.email.size() <= 200;
+    }
+
+    match /admins/{userId} {
+      allow get, list: if false; // not needed to read by others
+      allow create: if isAdmin() && isValidId(userId) && isValidAdmin(incoming()) && userId == request.auth.uid;
+      allow update: if false; // immutable
+      allow delete: if false;
+    }
+
+    function isValidPost(data) {
+      return data.keys().hasAll(['title', 'content', 'lang', 'createdAt', 'updatedAt'])
+        && data.title is string && data.title.size() <= 200
+        && data.content is string && data.content.size() <= 50000
+        && data.lang is string && data.lang.size() <= 10
+        && data.createdAt == request.time
+        && data.updatedAt == request.time
+        && (data.get('category', '') is string || data.get('category', null) == null)
+        && (data.get('excerpt', '') is string || data.get('excerpt', null) == null)
+        && (data.get('date', '') is string || data.get('date', null) == null)
+        && (data.get('image', '') is string || data.get('image', null) == null);
+    }
+    
+    function isValidPostUpdate(data) {
+      return data.title is string && data.title.size() <= 200
+        && data.content is string && data.content.size() <= 50000
+        && data.lang is string && data.lang.size() <= 10
+        && data.updatedAt == request.time
+        && (data.get('category', '') is string || data.get('category', null) == null)
+        && (data.get('excerpt', '') is string || data.get('excerpt', null) == null)
+        && (data.get('date', '') is string || data.get('date', null) == null)
+        && (data.get('image', '') is string || data.get('image', null) == null);
+    }
+
+    match /posts/{postId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidId(postId) && isValidPost(incoming());
+      allow update: if isAdmin() && isValidId(postId) && isValidPostUpdate(incoming()) && incoming().createdAt == existing().createdAt;
+      allow delete: if isAdmin();
+    }
+
+    function isValidPage(data) {
+       return data.keys().hasAll(['pageId', 'lang', 'contentJson', 'updatedAt'])
+         && data.pageId is string && data.pageId.size() <= 100
+         && data.lang is string && data.lang.size() <= 10
+         && data.contentJson is string && data.contentJson.size() <= 100000
+         && data.updatedAt == request.time;
+    }
+    function isValidPageUpdate(data) {
+       return data.pageId is string && data.pageId.size() <= 100
+         && data.lang is string && data.lang.size() <= 10
+         && data.contentJson is string && data.contentJson.size() <= 100000
+         && data.updatedAt == request.time;
+    }
+
+    match /pages/{docId} {
+      allow get, list: if true;
+      allow create: if isAdmin() && isValidId(docId) && isValidPage(incoming());
+      allow update: if isAdmin() && isValidId(docId) && isValidPageUpdate(incoming());
+      allow delete: if isAdmin();
+    }
+  }
+}
