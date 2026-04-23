@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, doc, setDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 import { Edit2, Copy, X } from 'lucide-react';
+import i18n from '../../i18n';
 
 export default function AdminPages() {
   const [pages, setPages] = useState<any[]>([]);
@@ -35,11 +36,22 @@ export default function AdminPages() {
     if(existing) {
       setCurrentPage(existing);
     } else {
+      let defaultJsonStr = '{\n  "title": "",\n  "subtitle": ""\n}';
+      
+      try {
+        const bundle = i18n.getResourceBundle(lang, 'translation');
+        if (bundle && bundle[pageId]) {
+          defaultJsonStr = JSON.stringify(bundle[pageId], null, 2);
+        }
+      } catch (err) {
+        console.error("Error fetching default translations", err);
+      }
+
       setCurrentPage({
         id: `${pageId}_${lang}`,
         pageId,
         lang,
-        contentJson: '{\n  "title": "",\n  "subtitle": ""\n}'
+        contentJson: defaultJsonStr
       });
     }
     setIsEditing(true);

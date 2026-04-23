@@ -2,10 +2,13 @@ import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDynamicPage } from '../hooks/useDynamicPage';
 
 export default function Products() {
   const { t } = useTranslation();
-  const productsList = t('products.list', { returnObjects: true }) as Array<{ name: string, subtitle: string, desc: string }>;
+  const dynamicContent = useDynamicPage('products');
+
+  const productsList = dynamicContent?.list || t('products.list', { returnObjects: true }) as Array<{ name: string, subtitle: string, desc: string }>;
 
   const products = [
     {
@@ -38,7 +41,7 @@ export default function Products() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          {t('products.titlePart1')} <span className="font-medium">{t('products.titleHighlight')}</span> {t('products.titlePart2')}
+          {dynamicContent?.titlePart1 || t('products.titlePart1')} <span className="font-medium">{dynamicContent?.titleHighlight || t('products.titleHighlight')}</span> {dynamicContent?.titlePart2 || t('products.titlePart2')}
         </motion.h1>
         <motion.p 
           className="text-sm opacity-50 font-light leading-relaxed"
@@ -46,7 +49,7 @@ export default function Products() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          {t('products.subtitle')}
+          {dynamicContent?.subtitle || t('products.subtitle')}
         </motion.p>
       </div>
 
