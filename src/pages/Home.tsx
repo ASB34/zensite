@@ -1,7 +1,10 @@
 import { motion } from 'motion/react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Home() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex-1 flex flex-col px-6 md:px-12 relative min-h-[calc(100vh-140px)]">
       
@@ -12,9 +15,9 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          Invisible <br/>
-          <span className="font-medium italic text-cyan-400">Technology</span>,
-          <br /> Visible Luxury.
+          {t('home.titlePart1')} <br/>
+          <span className="font-medium italic text-cyan-400">{t('home.titleTech')}</span>,
+          <br /> {t('home.titlePart2')}
         </motion.h1>
         <motion.p 
           className="mt-6 md:mt-8 text-sm md:text-base opacity-60 font-light leading-relaxed max-w-md"
@@ -22,7 +25,7 @@ export default function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          ZenCook redefines the kitchen landscape. Experience the world's most advanced under-counter induction hobs. No clutter, only pure heat.
+          {t('home.subtitle')}
         </motion.p>
         
         <motion.div 
@@ -32,10 +35,10 @@ export default function Home() {
           transition={{ duration: 1, delay: 0.4 }}
         >
           <Link to="/products" className="px-8 py-3 bg-white/10 hover:bg-white/20 border border-white/20 rounded-full text-xs uppercase tracking-[0.2em] transition-all backdrop-blur-md">
-            Explore Collection
+            {t('home.explore')}
           </Link>
           <Link to="/tiny-living" className="text-xs uppercase tracking-[0.2em] border-b border-transparent hover:border-cyan-400 text-cyan-400 pb-1 transition-all">
-            Tiny House Module &rarr;
+            {t('home.tinyLink')} &rarr;
           </Link>
         </motion.div>
       </div>
@@ -98,7 +101,7 @@ export default function Home() {
           
           <div className="absolute bottom-12 right-12 text-[10px] uppercase tracking-widest opacity-40 flex items-center gap-3">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            Surface Intelligence Sensor / Active Mode
+            {t('home.sensorInfo')}
           </div>
         </div>
       </motion.div>
@@ -111,24 +114,24 @@ export default function Home() {
         transition={{ duration: 1, delay: 0.6 }}
       >
         <Link to="/tiny-living" className="group bg-white/5 backdrop-blur-md p-6 border border-white/10 rounded-xl hover:bg-white/10 transition-all flex flex-col h-full transform hover:-translate-y-1">
-          <div className="text-cyan-400 text-[10px] uppercase font-bold tracking-widest mb-3">Special Edition</div>
-          <h3 className="text-lg font-light mb-2 group-hover:text-cyan-200 transition-colors">Tiny House Module</h3>
-          <p className="text-xs opacity-50 mb-6 flex-1">Ready-to-use sink & hob integration for nomadic living and micro-homes.</p>
-          <span className="text-[10px] border-b border-white/30 pb-1 self-start group-hover:border-cyan-400 transition-colors uppercase tracking-[0.1em]">View Integrated Modules</span>
+          <div className="text-cyan-400 text-[10px] uppercase font-bold tracking-widest mb-3">{t('home.card1Tag')}</div>
+          <h3 className="text-lg font-light mb-2 group-hover:text-cyan-200 transition-colors">{t('home.card1Title')}</h3>
+          <p className="text-xs opacity-50 mb-6 flex-1">{t('home.card1Desc')}</p>
+          <span className="text-[10px] border-b border-white/30 pb-1 self-start group-hover:border-cyan-400 transition-colors uppercase tracking-[0.1em]">{t('home.card1Link')}</span>
         </Link>
 
         <Link to="/journal" className="group bg-white/5 backdrop-blur-md p-6 border border-white/10 rounded-xl hover:bg-white/10 transition-all flex flex-col h-full transform hover:-translate-y-1">
-          <div className="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-3">The Journal</div>
-          <h3 className="text-lg font-light mb-2 group-hover:text-cyan-200 transition-colors">Culinary Arts</h3>
-          <p className="text-xs opacity-50 mb-6 flex-1">Molecular gastronomy and curated induction recipes for the modern chef.</p>
-          <span className="text-[10px] border-b border-white/30 pb-1 self-start group-hover:border-cyan-400 transition-colors uppercase tracking-[0.1em]">Explore Blog</span>
+          <div className="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-3">{t('home.card2Tag')}</div>
+          <h3 className="text-lg font-light mb-2 group-hover:text-cyan-200 transition-colors">{t('home.card2Title')}</h3>
+          <p className="text-xs opacity-50 mb-6 flex-1">{t('home.card2Desc')}</p>
+          <span className="text-[10px] border-b border-white/30 pb-1 self-start group-hover:border-cyan-400 transition-colors uppercase tracking-[0.1em]">{t('home.card2Link')}</span>
         </Link>
 
         <Link to="/compare" className="group bg-white/5 backdrop-blur-md p-6 border border-white/10 rounded-xl hover:bg-white/10 transition-all flex flex-col h-full transform hover:-translate-y-1">
-          <div className="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-3">Analysis</div>
-          <h3 className="text-lg font-light mb-2 group-hover:text-cyan-200 transition-colors">Compare Series</h3>
-          <p className="text-xs opacity-50 mb-6 flex-1">Compare the Zen 2-Burner and Zen 4-Burner configurations for your space.</p>
-          <span className="text-[10px] border-b border-white/30 pb-1 self-start group-hover:border-cyan-400 transition-colors uppercase tracking-[0.1em]">Specs Comparison</span>
+          <div className="text-gray-400 text-[10px] uppercase font-bold tracking-widest mb-3">{t('home.card3Tag')}</div>
+          <h3 className="text-lg font-light mb-2 group-hover:text-cyan-200 transition-colors">{t('home.card3Title')}</h3>
+          <p className="text-xs opacity-50 mb-6 flex-1">{t('home.card3Desc')}</p>
+          <span className="text-[10px] border-b border-white/30 pb-1 self-start group-hover:border-cyan-400 transition-colors uppercase tracking-[0.1em]">{t('home.card3Link')}</span>
         </Link>
       </motion.div>
     </div>

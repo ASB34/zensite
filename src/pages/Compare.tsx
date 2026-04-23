@@ -1,19 +1,25 @@
 import { motion } from 'motion/react';
 import { Check, Minus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Compare() {
-  const models = ['Zen 2-Burner', 'Zen 4-Burner', 'Zen 6-Burner Pro', 'ZenNomad Module'];
+  const { t } = useTranslation();
+
+  const models = t('compare.models', { returnObjects: true }) as string[];
+  const featureNames = t('compare.featureNames', { returnObjects: true }) as string[];
+  const valuesMatrix = t('compare.valuesMatrix', { returnObjects: true }) as string[][];
   
-  const features = [
-    { name: 'Cooking Zones', values: ['2', '4', '6 (Bridge)', '2 + Sink'] },
-    { name: 'Max Power Output', values: ['3.6 kW', '7.2 kW', '10.8 kW', '3.6 kW'] },
-    { name: 'Surface Material Compatibility', values: ['12-20mm Porcelain', '12-20mm Porcelain', '12-20mm Porcelain (All)', 'Included Surface'] },
-    { name: 'Light Beam Interface', values: [<Check />, <Check />, <Check />, <Check />] },
-    { name: 'Smartphone Connect', values: [<Minus />, <Check />, <Check />, <Check />] },
-    { name: 'Automated Pan Sensing', values: [<Minus />, <Minus />, <Check />, <Minus />] },
-    { name: 'Booster Function', values: [<Check />, <Check />, <Check />, <Check />] },
-    { name: 'Installation', values: ['Professional', 'Professional', 'Professional', 'Plug & Play'] },
-  ];
+  const features = featureNames.map((name, index) => {
+    // If the index corresponds to boolean flags (indices 3, 4, 5, 6), we map strings to icons
+    return {
+      name,
+      values: valuesMatrix[index].map((val) => {
+        if (val === 'Yes' || val === 'Evet' || val === 'Ja' || val === 'Sì' || val === 'نعم') return <Check />;
+        if (val === 'No' || val === 'Hayır' || val === 'Nein' || val === 'لا') return <Minus />;
+        return val;
+      })
+    };
+  });
 
   return (
     <div className="flex-1 py-12 px-6 md:px-12 relative flex flex-col items-center">
@@ -25,7 +31,7 @@ export default function Compare() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Compare <span className="font-medium text-cyan-400">Specifications</span>
+          {t('compare.titlePart1')} <span className="font-medium text-cyan-400">{t('compare.titlePart2')}</span>
         </motion.h1>
         <motion.p 
           className="text-sm opacity-50 font-light leading-relaxed"
@@ -33,7 +39,7 @@ export default function Compare() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          Analyze the technical aspects of the ZenCook series to find the perfect configuration for your architectural project.
+          {t('compare.subtitle')}
         </motion.p>
       </div>
 
@@ -46,7 +52,7 @@ export default function Compare() {
         <table className="w-full min-w-[800px] border-collapse text-left">
           <thead>
             <tr>
-              <th className="p-4 border-b border-white/20 text-xs font-normal uppercase tracking-widest text-gray-400 w-1/4">Feature</th>
+              <th className="p-4 border-b border-white/20 text-xs font-normal uppercase tracking-widest text-gray-400 w-1/4">{t('compare.featureTh')}</th>
               {models.map(model => (
                 <th key={model} className="p-4 border-b border-white/20 text-sm font-light h-20 align-bottom w-[18.75%]">
                   {model}

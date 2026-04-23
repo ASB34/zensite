@@ -1,39 +1,31 @@
 import { motion } from 'motion/react';
 import { Play } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export default function Journal() {
+  const { t } = useTranslation();
+  const postsList = t('journal.posts', { returnObjects: true }) as Array<{ category: string, title: string, excerpt: string, date: string }>;
+
   const posts = [
     {
       id: 1,
-      category: 'Recipe',
-      title: 'Sous Vide Filet with Invisible Induction',
-      excerpt: 'Precision temperature control allows for perfect searing directly on the porcelain surface.',
+      ...postsList[0],
       image: 'from-orange-900/20 to-red-900/10',
-      date: 'Oct 12'
     },
     {
       id: 2,
-      category: 'Architecture',
-      title: 'The Minimalist Kitchen Philosophy',
-      excerpt: 'Why hiding appliances creates a more tranquil environment for culinary creativity.',
+      ...postsList[1],
       image: 'from-gray-800/40 to-[#111]',
-      date: 'Oct 08'
     },
     {
       id: 3,
-      category: 'Innovation',
-      title: 'Understanding Surface Intelligence',
-      excerpt: 'How ZenCook maps your pan size and material to optimize magnetic waves.',
+      ...postsList[2],
       image: 'from-cyan-900/20 to-blue-900/10',
-      date: 'Sep 29'
     },
     {
       id: 4,
-      category: 'Recipe',
-      title: 'Caramelizing Sugar at 180°C',
-      excerpt: 'The delicate art of temperature stability using our responsive sensors.',
+      ...postsList[3],
       image: 'from-amber-900/20 to-[#111]',
-      date: 'Sep 15'
     }
   ];
 
@@ -50,7 +42,7 @@ export default function Journal() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            The <span className="font-medium italic text-cyan-400">Journal</span>
+            {t('journal.titlePart1')} <span className="font-medium italic text-cyan-400">{t('journal.titlePart2')}</span>
           </motion.h1>
           <motion.p 
             className="text-sm opacity-50 font-light"
@@ -58,7 +50,7 @@ export default function Journal() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Culinary techniques, architectural integration, and recipes.
+            {t('journal.subtitle')}
           </motion.p>
         </div>
       </div>
@@ -76,9 +68,9 @@ export default function Journal() {
         </div>
         
         <div className="absolute bottom-8 left-8 right-8 z-10">
-           <span className="text-cyan-400 text-[10px] uppercase font-bold tracking-widest mb-2 block">Masterclass</span>
-           <h2 className="text-3xl font-light mb-2 group-hover:text-cyan-100 transition-colors">Cooking Without Boundaries</h2>
-           <p className="text-sm opacity-60 font-light max-w-lg">A visual journey through preparing a 5-course meal on an entirely blank counter surface.</p>
+           <span className="text-cyan-400 text-[10px] uppercase font-bold tracking-widest mb-2 block">{t('journal.masterclassTag')}</span>
+           <h2 className="text-3xl font-light mb-2 group-hover:text-cyan-100 transition-colors">{t('journal.masterclassTitle')}</h2>
+           <p className="text-sm opacity-60 font-light max-w-lg">{t('journal.masterclassDesc')}</p>
         </div>
       </motion.div>
 

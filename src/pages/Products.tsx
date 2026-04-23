@@ -1,30 +1,28 @@
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function Products() {
+  const { t } = useTranslation();
+  const productsList = t('products.list', { returnObjects: true }) as Array<{ name: string, subtitle: string, desc: string }>;
+
   const products = [
     {
       id: 'zen-2',
-      name: 'Zen 2-Burner',
-      subtitle: 'Compact Brilliance',
-      desc: 'Ideal for urban apartments and secondary kitchens. Two high-power invisible zones.',
+      ...productsList[0],
       imageClass: 'from-[#111] to-[#0A0A0A]',
       zones: 2,
     },
     {
       id: 'zen-4',
-      name: 'Zen 4-Burner',
-      subtitle: 'The Culinary Standard',
-      desc: 'The standard configuration for modern homes. Four flexible cooking zones with bridge technology.',
+      ...productsList[1],
       imageClass: 'from-[#1A1A1A] to-[#111]',
       zones: 4,
     },
     {
       id: 'zen-6',
-      name: 'Zen 6-Burner Pro',
-      subtitle: 'Maximum Freedom',
-      desc: 'For the professional home chef. Six zones with automated pan recognition and sliding power control.',
+      ...productsList[2],
       imageClass: 'from-[#222] to-[#111]',
       zones: 6,
     }
@@ -40,7 +38,7 @@ export default function Products() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          The <span className="font-medium">Invisible</span> Collection
+          {t('products.titlePart1')} <span className="font-medium">{t('products.titleHighlight')}</span> {t('products.titlePart2')}
         </motion.h1>
         <motion.p 
           className="text-sm opacity-50 font-light leading-relaxed"
@@ -48,7 +46,7 @@ export default function Products() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          A seamless integration of power and design. Our hobs hide entirely beneath your porcelain or ceramic surfaces, revealing themselves only through minimalist light projections.
+          {t('products.subtitle')}
         </motion.p>
       </div>
 
@@ -80,7 +78,7 @@ export default function Products() {
               </div>
               
               <div className="absolute bottom-6 left-6 text-[10px] text-cyan-400/50 uppercase tracking-widest group-hover:text-cyan-400 transition-colors">
-                Surface Map Visualization
+                {t('products.mapVis')}
               </div>
             </div>
 
@@ -94,19 +92,19 @@ export default function Products() {
               
               <div className="flex items-center gap-6 border-t border-white/10 pt-6">
                  <div className="flex flex-col">
-                    <span className="text-[10px] uppercase text-gray-500 tracking-wider mb-1">Max Power</span>
+                    <span className="text-[10px] uppercase text-gray-500 tracking-wider mb-1">{t('products.maxPower')}</span>
                     <span className="text-sm font-medium">{product.zones * 1800}W</span>
                  </div>
                  <div className="w-[1px] h-8 bg-white/10"></div>
                  <div className="flex flex-col">
-                    <span className="text-[10px] uppercase text-gray-500 tracking-wider mb-1">Surface Config</span>
-                    <span className="text-sm font-medium">{product.zones} Zones</span>
+                    <span className="text-[10px] uppercase text-gray-500 tracking-wider mb-1">{t('products.surfaceConfig')}</span>
+                    <span className="text-sm font-medium">{product.zones} {t('products.zones')}</span>
                  </div>
               </div>
 
               <div className="mt-8">
                 <Link to="/compare" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-cyan-400 hover:text-cyan-300 transition-colors group/link pb-1 border-b border-transparent hover:border-cyan-400">
-                  Compare Specs 
+                  {t('products.compareLink')} 
                   <ArrowRight className="w-3 h-3 group-hover/link:translate-x-1 transition-transform" />
                 </Link>
               </div>
